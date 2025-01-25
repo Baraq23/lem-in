@@ -26,7 +26,7 @@ type Path struct{
 	Rooms []*Room
 }
 
-type Graph map[string][]string
+type Neighbours map[string][]string
 
 type AntPopulation struct{
 	Size int
