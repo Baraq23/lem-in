@@ -25,3 +25,14 @@ type Farm struct{
 type Path struct{
 	Rooms []*Room
 }
+
+type Graph map[string][]string
+
+type AntPopulation struct{
+	Size int
+}
+
+type Stations struct {
+	Start string
+	End string
+}
