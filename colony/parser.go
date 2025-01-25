@@ -29,7 +29,7 @@ func GetNeighbours(inputFile string, antPopulation *AntPopulation, stations *Sta
 	}
 
 	// get the total number of ants, which is given as a number in the first line of the file
-	text := strings.TrimSpace(scanner.Text)
+	text := strings.TrimSpace(scanner.Text())
 	if text == ""{
 		return nil, nil, errors.New("invalid data format, invalid number of Ants")
 	}
