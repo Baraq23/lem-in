@@ -95,3 +95,42 @@ func(antFarm *AntFarm) allAntsReached()bool{
 	}
 	return true
 }
+
+// moveAnt handles the movement of a single ant along its assigned path.
+//
+// Parameters:
+// - ant: A pointer to the Ant that is moving.
+// - occupiedRooms: A map where keys are Room pointers and values are the Ant occupying each room.
+//
+// Returns:
+// - A formatted string representing the move in the format "L<ant_id>-<room_name>".
+// - An empty string if the ant cannot move (e.g., it has reached the end of its path or the next room is occupied).
+func(antFarm *AntFarm) moveAnt(ant *Ant, occupiedRooms map[*Room]*Ant)string{
+	if ant.PathIndex >= len(ant.Path)-1 {
+		return ""
+	}
+
+	nextRoom := ant.Path[ant.PathIndex+1]
+
+	//check availability of next room
+	if occupiedRooms[nextRoom] != nil && !nextRoom.IsEnd{
+		return ""
+	}
+	//clear room if it's not start or end 
+	if !ant.CurrentRoom.IsStart && !ant.CurrentRoom.IsEnd{
+		occupiedRooms[ant.CurrentRoom] = nil
+	}
+	// move ant to next room
+	ant.CurrentRoom = nextRoom
+	ant.PathIndex++
+	//mark the room as occupied if it is not the start or end
+	if !nextRoom.IsStart && !nextRoom.IsEnd{
+		occupiedRooms[nextRoom] = ant
+	}
+	//check if the end room has been reached
+	if nextRoom.IsEnd{
+		ant.ReachedEnd = true
+	}
+
+	return fmt.Sprintf("L%d-%s", ant.Id, nextRoom.Name)
+}
