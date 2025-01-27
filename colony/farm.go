@@ -66,7 +66,6 @@ return farm
 //
 // If any of these conditions are violated, it returns an error with a detailed message.
 // If the ant is valid, it returns nil.
-
 func(antFarm *AntFarm) validateAnt(ant *Ant) error{
 	if ant == nil{
 		return errors.New("invalid data format, ant is nil")
@@ -81,4 +80,14 @@ func(antFarm *AntFarm) validateAnt(ant *Ant) error{
 		return fmt.Errorf("only move one ant per turn")
 	}
 	return nil
+}
+
+//allAntsReached checks if all ants in the AntFarm have reached the end room
+func(antFarm *AntFarm) allAntsReached()bool{
+	for _, ant := range antFarm.Ants{
+		if err := antFarm.validateAnt(ant); err == nil{
+			return true
+		}
+	}
+	return false
 }
