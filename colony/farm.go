@@ -1,5 +1,10 @@
 package colony
 
+import (
+	"errors"
+	"fmt"
+)
+
 // CreateAntFarm initializes an AntFarm by creating rooms and assigning ants to paths.
 // It takes a map of path-to-ant assignments, along with the start and end room names.
 // It creates the necessary rooms, assigns them to the farm, and creates ants with their respective paths.
@@ -50,4 +55,30 @@ func CreateAntFarm(pathToAnt map[int][]string, start, end string) *AntFarm{
 			farm.Ants[antID-1] = ant
 		}
 return farm	
+}
+
+// validateAnt checks if the provided ant is in a valid state.
+// It validates the following:
+// 1. The ant is not nil.
+// 2. The ant has a valid path (not empty).
+// 3. The ant has a current room assigned.
+// 4. If the ant is at the start (path length of 2), only one ant can move at a time.
+//
+// If any of these conditions are violated, it returns an error with a detailed message.
+// If the ant is valid, it returns nil.
+
+func(antFarm *AntFarm) validateAnt(ant *Ant) error{
+	if ant == nil{
+		return errors.New("invalid data format, ant is nil")
+	}
+	if len(ant.Path) == 0{
+		return fmt.Errorf("invalid data format, ant %d has no valid path", ant.Id)
+	}
+	if ant.CurrentRoom == nil{
+		return fmt.Errorf("invalid data format, ant %d has no current room set", ant.Id)
+	}
+	if len(ant.Path) == 2 && antFarm.Move != 0{
+		return fmt.Errorf("only move one ant per turn")
+	}
+	return nil
 }
