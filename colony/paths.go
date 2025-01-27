@@ -57,3 +57,22 @@ func contains(slice []string, item string)bool{
 	}
 	return false
 }
+
+// optimumPath selects the set of paths with the maximum number of unique paths.
+//
+// Parameters:
+// - setOfPaths: A 3D slice containing multiple sets of 2D slices, 
+//   where each 2D slice represents a group of paths.
+//
+// Returns:
+// - The 2D slice (set of paths) with the highest number of paths.
+func optimumPaths(setOfPaths [][][]string) [][]string{
+	var longestSet [][]string
+
+	for _, pathSlices := range setOfPaths{
+		if len(pathSlices) > len(longestSet){
+			longestSet = pathSlices
+		}
+	}
+	return longestSet
+}
