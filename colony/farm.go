@@ -85,9 +85,13 @@ func(antFarm *AntFarm) validateAnt(ant *Ant) error{
 //allAntsReached checks if all ants in the AntFarm have reached the end room
 func(antFarm *AntFarm) allAntsReached()bool{
 	for _, ant := range antFarm.Ants{
-		if err := antFarm.validateAnt(ant); err == nil{
-			return true
+		if err := antFarm.validateAnt(ant); err != nil{
+			return false
 		}
+		if !ant.ReachedEnd{
+			return false
+		}
+
 	}
-	return false
+	return true
 }
