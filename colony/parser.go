@@ -105,6 +105,7 @@ func GetNeighbours(inputFile string, antPopulation *AntPopulation, stations *Sta
 	return neighbours, rooms, nil
 }
 
+// check if it's a tunnel based on the format e.g 0-2
 func isTunnel(parts []string) bool{
 	return len(parts) == 1 && strings.Contains(parts[0], "-")
 }
