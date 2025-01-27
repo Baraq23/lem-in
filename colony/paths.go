@@ -134,3 +134,46 @@ func GetUniquePaths(paths [][]string) [][]string{
 	}
 return optimumPaths(uniquePaths)
 }
+
+// AssignPathsToAnts distributes ants across a set of paths to balance workload.
+// Each ant is assigned to the "best" path based on its current capacity.
+//
+// Parameters:
+// - antCount: Total number of ants to be assigned to paths.
+// - paths: A slice of paths where each path is a slice of strings (representing rooms).
+//
+// Returns:
+// - A map[int][]string where the key is the ant's ID, and the value is the path assigned to it.
+//
+// Logic:
+// - The function ensures ants are assigned to paths in a way that balances the load. 
+//   This is done by considering the path's length and the number of ants already assigned to it.
+// - For each ant:
+//   - Start by assuming the ant will take the first path (assignedPath = 0).
+//   - Iterate through the remaining paths to find the "best" one for the ant.
+//     - The "best" path is determined by comparing the length of the paths plus the number of ants already assigned to them.
+//     - If a shorter or less-loaded path is found, update `assignedPath`.
+//   - Assign the selected path to the current ant in the map `pathsToAnt`.
+//   - Increment the count of ants assigned to the chosen path in `antsPerPath`.
+//
+// Notes:
+// - The inner loop uses a greedy approach, exiting early when a better path is not found, ensuring efficiency.
+// - The paths are evaluated relative to their lengths and load, promoting fairness in the distribution of ants.
+func AssignPathsToAnts(antCount int, paths [][]string) map[int][]string{
+	pathsToAnt := make(map[int][]string) // keys are ant IDs and values the paths assigned to each ant
+	antsPerPath := make([]int, len(paths)) // number of ants currently assigned to specific path
+
+	for ant := 1; ant <= antCount; ant++{
+		assignedPath := 0
+		for i := 1; i < len(paths); i++{
+			if (len(paths[i-1]) + antsPerPath[i-1]) >= (len(paths[i]) + antsPerPath[i]){
+				assignedPath = i
+			}else{
+				break
+			}
+		}
+		pathsToAnt[ant] = paths[assignedPath] //map current ant to selected path
+		antsPerPath[assignedPath]++ // increment number or count of ants assigned to the path 
+	}
+	return pathsToAnt
+}
