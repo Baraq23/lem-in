@@ -14,7 +14,7 @@ type Room struct{
 	IsEnd bool
 }
 
-type Farm struct{
+type AntFarm struct{
 	Ants []*Ant
 	Move int
 	Rooms map[string]*Room
