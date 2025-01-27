@@ -159,8 +159,8 @@ return optimumPaths(uniquePaths)
 // Notes:
 // - The inner loop uses a greedy approach, exiting early when a better path is not found, ensuring efficiency.
 // - The paths are evaluated relative to their lengths and load, promoting fairness in the distribution of ants.
-func AssignPathsToAnts(antCount int, paths [][]string) map[int][]string{
-	pathsToAnt := make(map[int][]string) // keys are ant IDs and values the paths assigned to each ant
+func AssignPathToAnt(antCount int, paths [][]string) map[int][]string{
+	pathToAnt := make(map[int][]string) // keys are ant IDs and values the paths assigned to each ant
 	antsPerPath := make([]int, len(paths)) // number of ants currently assigned to specific path
 
 	for ant := 1; ant <= antCount; ant++{
@@ -172,8 +172,8 @@ func AssignPathsToAnts(antCount int, paths [][]string) map[int][]string{
 				break
 			}
 		}
-		pathsToAnt[ant] = paths[assignedPath] //map current ant to selected path
+		pathToAnt[ant] = paths[assignedPath] //map current ant to selected path
 		antsPerPath[assignedPath]++ // increment number or count of ants assigned to the path 
 	}
-	return pathsToAnt
+	return pathToAnt
 }
