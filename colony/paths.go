@@ -76,3 +76,61 @@ func optimumPaths(setOfPaths [][][]string) [][]string{
 	}
 	return longestSet
 }
+
+// GetUniquePaths takes a set of paths and identifies the most optimal group of unique paths.
+// It ensures that paths in each group do not share intermediate rooms (excluding start and end).
+// 
+// Parameters:
+// - paths: A 2D slice where each inner slice represents a path of rooms.
+//
+// Returns:
+// - A 2D slice representing the group of paths with maximum uniqueness.
+//
+// Function Overview:
+// 1. Iterates over each path as a base reference (`basePath`).
+// 2. Marks all rooms in the `basePath` as visited using a map (`visitedRooms`).
+// 3. For every other path, checks for uniqueness by ensuring no overlapping intermediate rooms with the `basePath`.
+// 4. Appends unique paths (relative to `basePath`) to a group (`uniquePath`).
+// 5. Repeats for all paths, storing all groups in `uniquePaths`.
+// 6. Uses `optimumPaths` to select and return the group with the maximum unique paths.
+
+func GetUniquePaths(paths [][]string) [][]string{
+	var uniquePaths [][][]string
+
+	for i, basePath := range paths{
+		uniquePath := make([][]string, 0)
+		uniquePath = append(uniquePath, basePath)
+		visitedRooms := make(map[string]bool)
+
+		//mark all rooms in the basePath as visited
+		for _, room := range basePath{
+			visitedRooms[room] = true
+		}
+
+		//get unique paths with reference to the base path
+		for j, path := range paths{
+			if i == j {
+				continue // skip the base path
+			}
+
+			middleRooms := path[1 : len(path)-1] // exclude start and end rooms
+			isUnique := func([]string) bool{
+				for _, room := range middleRooms{
+					if _, ok := visitedRooms[room]; ok{
+						return false
+					}
+				}
+				return true
+			}
+
+			if isUnique(path){
+				uniquePath = append(uniquePath, path)
+				for _, room := range middleRooms{
+					visitedRooms[room] = true
+				}
+			}
+		}
+		uniquePaths = append(uniquePaths, uniquePath)
+	}
+return optimumPaths(uniquePaths)
+}
