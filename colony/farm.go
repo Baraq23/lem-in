@@ -84,17 +84,17 @@ func(antFarm *AntFarm) validateAnt(ant *Ant) error{
 }
 
 //allAntsReached checks if all ants in the AntFarm have reached the end room
-func(antFarm *AntFarm) allAntsReached() (bool, error){
+func(antFarm *AntFarm) allAntsReached() bool{
 	for _, ant := range antFarm.Ants{
 		if err := antFarm.validateAnt(ant); err != nil{
-			return false, err
+			return true
 		}
 		if !ant.ReachedEnd{
-			return false, nil
+			return false
 		}
 
 	}
-	return true, nil
+	return true
 }
 
 // moveAnt handles the movement of a single ant along its assigned path.
@@ -212,9 +212,8 @@ func (antFarm *AntFarm) SimulateMovement()(string, error){
 	occupiedRooms := make(map[*Room]*Ant)
 	var simulatedMoves []string
 
-	allAntsReached, err := antFarm.allAntsReached()
-
-	for !allAntsReached && err == nil{
+	//fmt.Println(err)
+	for !antFarm.allAntsReached(){
 		moves := antFarm.getAntMoves(occupiedRooms)
 		if len(moves) > 0{
 			simulatedMoves = append(simulatedMoves, strings.Join(moves, " "))
