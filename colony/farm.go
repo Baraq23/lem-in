@@ -184,6 +184,26 @@ func (antFarm *AntFarm) getAntMoves(occupiedRooms map[*Room]*Ant) []string{
 	return moves
 }
 
+// SimulateMovement orchestrates the entire ant movement simulation within the AntFarm.
+// It processes the movements of ants step-by-step until all ants have reached their destinations.
+//
+// Returns:
+// - string: A formatted string containing all moves made during the simulation, with each step's moves on a new line.
+// - error: An error if the simulation cannot proceed, such as when there are no ants.
+//
+// Function Details:
+// 1. Checks if the AntFarm contains ants (`len(antFarm.Ants) == 0`):
+//    - If no ants are found, it returns an error indicating invalid data.
+// 2. Initializes a map `occupiedRooms` to track which ants occupy which rooms during the simulation.
+// 3. Declares a slice `simulatedMoves` to record all movements of ants across all steps.
+// 4. Retrieves the status of whether all ants have reached their destination (`allAntsReached`) using `antFarm.allAntsReached()`.
+// 5. Enters a loop that continues as long as not all ants have reached their destination and no error occurred:
+//    - Calls `getAntMoves` to process the current step's movements.
+//    - Appends the joined movements for the step to `simulatedMoves` if there are any moves in the current step.
+//    - Resets the `Move` counter in `antFarm` to `0` after processing the step (if non-zero).
+// 6. Exits the loop when all ants have reached their destination or an error occurs.
+// 7. Returns the joined `simulatedMoves` as a single string, with each step's moves separated by a newline, and a `nil` error.
+
 func (antFarm *AntFarm) SimulateMovement()(string, error){
 	if len(antFarm.Ants) == 0{
 		return "", errors.New("invalid data format, invalid number of ants")
