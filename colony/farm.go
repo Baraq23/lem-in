@@ -3,6 +3,7 @@ package colony
 import (
 	"errors"
 	"fmt"
+	"strings"
 )
 
 // CreateAntFarm initializes an AntFarm by creating rooms and assigning ants to paths.
@@ -83,17 +84,17 @@ func(antFarm *AntFarm) validateAnt(ant *Ant) error{
 }
 
 //allAntsReached checks if all ants in the AntFarm have reached the end room
-func(antFarm *AntFarm) allAntsReached()bool{
+func(antFarm *AntFarm) allAntsReached() (bool, error){
 	for _, ant := range antFarm.Ants{
 		if err := antFarm.validateAnt(ant); err != nil{
-			return false
+			return false, err
 		}
 		if !ant.ReachedEnd{
-			return false
+			return false, nil
 		}
 
 	}
-	return true
+	return true, nil
 }
 
 // moveAnt handles the movement of a single ant along its assigned path.
@@ -181,4 +182,26 @@ func (antFarm *AntFarm) getAntMoves(occupiedRooms map[*Room]*Ant) []string{
 		}
 	}
 	return moves
+}
+
+func (antFarm *AntFarm) SimulateMovement()(string, error){
+	if len(antFarm.Ants) == 0{
+		return "", errors.New("invalid data format, invalid number of ants")
+	}
+
+	occupiedRooms := make(map[*Room]*Ant)
+	var simulatedMoves []string
+
+	allAntsReached, err := antFarm.allAntsReached()
+
+	for !allAntsReached && err == nil{
+		moves := antFarm.getAntMoves(occupiedRooms)
+		if len(moves) > 0{
+			simulatedMoves = append(simulatedMoves, strings.Join(moves, " "))
+		}
+		if antFarm.Move != 0{
+			antFarm.Move = 0
+		}
+	}
+return strings.Join(simulatedMoves, "\n") + "\n", nil
 }
