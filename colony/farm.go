@@ -134,3 +134,51 @@ func(antFarm *AntFarm) moveAnt(ant *Ant, occupiedRooms map[*Room]*Ant)string{
 
 	return fmt.Sprintf("L%d-%s", ant.Id, nextRoom.Name)
 }
+
+// getAntMoves calculates and performs the movements of all ants in the AntFarm.
+// It clears the occupancy of non-start and non-end rooms, validates each ant, and processes their movement.
+// 
+// Parameters:
+// - occupiedRooms (map[*Room]*Ant): A map tracking which ants occupy which rooms. Keys are Room pointers, and values are Ant pointers.
+//
+// Returns:
+// - []string: A slice of strings describing the movements of ants during the function call.
+//
+// Function Details:
+// 1. Clears the `occupiedRooms` map for all rooms except the start and end rooms to reset the state for the next round.
+// 2. Iterates through all ants in the AntFarm and performs the following:
+//    - Validates each ant using the `validateAnt` method. If validation fails, skips to the next ant.
+//    - Skips ants that have already reached the end room.
+//    - Moves the ant to its next position using the `moveAnt` method, which updates the `occupiedRooms` map accordingly.
+//    - Increments the AntFarm's `Move` counter if the ant has a direct path consisting of only the start and end rooms.
+//    - Appends the movement description to the `moves` slice if the ant successfully moves.
+// 3. Returns the `moves` slice, which contains all successful movement descriptions for the current function call.
+func (antFarm *AntFarm) getAntMoves(occupiedRooms map[*Room]*Ant) []string{
+	var moves []string
+
+	// clear occupied rooms except for start and end
+	for room := range occupiedRooms{
+		if !room.IsStart && !room.IsEnd{
+			occupiedRooms[room] = nil
+		}
+	}
+
+	for _, ant := range antFarm.Ants{
+		if err := antFarm.validateAnt(ant); err != nil{
+			continue // skip to the next ant if there is an error
+		}
+
+		if ant.ReachedEnd{
+			continue //skip if the ant has reached the end
+		}
+
+		move := antFarm.moveAnt(ant, occupiedRooms)
+		if len(ant.Path) == 2{
+			antFarm.Move++
+		}
+		if move != ""{
+			moves = append(moves, move)
+		}
+	}
+	return moves
+}
