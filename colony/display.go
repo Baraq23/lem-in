@@ -37,7 +37,6 @@ func DisplayOutput(){
 		fmt.Printf("only files with .txt extension are accepted")
 		return
 	}
-
 	antPopulation := &AntPopulation{}
 	stations := &Stations{}
 
@@ -47,7 +46,6 @@ func DisplayOutput(){
 		fmt.Println("ERROR: ", err)
 		return
 	}
-
 	start := stations.Start
 	end := stations.End
 	paths := GetAllPaths(neighbours, start, end)
@@ -67,6 +65,7 @@ func DisplayOutput(){
 		fmt.Println("ERROR: ", err)
 		return
 	}
+
 
 	fileContent, err := os.ReadFile(inputFile)
 	if err != nil{
