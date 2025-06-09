@@ -130,5 +130,5 @@ Each Lx-y indicates Ant x moves to Room y in that turn.
     - Efficient use of Go’s standard library
  
  ### Collaborators
- - [Rabin Otieno](https://github.com/Rabinnn)
+ - [Rabin Otieno](https://github.com/Rabinnnn)
  - [Barrack Kope](https://github.com/Baraq23)
