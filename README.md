@@ -66,7 +66,7 @@ Example:
 ```bash
 go run . test_file.txt
 ```
-*Where test_file cintains:*
+*Where test_file.txt contains:*
 
     3
     ##start
@@ -115,3 +115,20 @@ Each Lx-y indicates Ant x moves to Room y in that turn.
     - Clean output format following project specification
 
     - Written entirely in Go using only the standard library
+
+
+- Concepts Learned
+
+    - Graph traversal and optimization
+
+    - Input parsing and validation
+
+    - Struct and slice manipulation in Go
+
+    - String processing and formatted output
+
+    - Efficient use of Go’s standard library
+ 
+ ### Collaborators
+ - [Rabin Otieno](https://github.com/Rabinnn)
+ - [Barrack Kope](https://github.com/Baraq23)
